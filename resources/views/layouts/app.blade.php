@@ -412,7 +412,7 @@
             </button>
             
             <div class="user-menu dropdown d-none d-lg-flex">
-                @if(Auth::user()->profile_picture)
+                @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
                 <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="user-avatar" alt="Profile">
                 @else
                 <div class="user-avatar-placeholder">

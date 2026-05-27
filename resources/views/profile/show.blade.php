@@ -16,7 +16,7 @@
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm" style="border-radius:12px;">
             <div class="card-body text-center p-4">
-                @if(Auth::user()->profile_picture)
+                @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
                 <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
                      class="rounded-circle mb-3" width="150" height="150" style="object-fit:cover;">
                 @else

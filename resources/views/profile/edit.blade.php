@@ -15,12 +15,12 @@
             @csrf @method('PUT')
             
             <div class="text-center mb-4">
-                @if(Auth::user()->profile_picture)
+                @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
                 <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
-                     class="rounded-circle mb-2" width="120" height="120" style="object-fit:cover;" id="preview">
+                     class="rounded-circle mb-2" width="120" height="120" style="object-fit:cover;" id="previewImg">
                 @else
                 <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:120px;height:120px;" id="preview">
+                     style="width:120px;height:120px;" id="previewDiv">
                     <i class="bi bi-person-fill text-primary" style="font-size:3rem;"></i>
                 </div>
                 @endif
@@ -101,8 +101,15 @@ document.getElementById('profile_picture').addEventListener('change', function(e
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('preview');
-            preview.innerHTML = `<img src="${e.target.result}" class="rounded-circle" width="120" height="120" style="object-fit:cover;">`;
+            // Remove old preview
+            const oldImg = document.getElementById('previewImg');
+            const oldDiv = document.getElementById('previewDiv');
+            
+            if (oldImg) {
+                oldImg.src = e.target.result;
+            } else if (oldDiv) {
+                oldDiv.outerHTML = `<img src="${e.target.result}" class="rounded-circle mb-2" width="120" height="120" style="object-fit:cover;" id="previewImg">`;
+            }
         };
         reader.readAsDataURL(file);
     }

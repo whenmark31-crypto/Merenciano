@@ -42,23 +42,23 @@
     .stat-card.info::before { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
     
     .stat-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 14px;
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
     .stat-value {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 800;
         color: var(--text-primary);
         line-height: 1;
     }
     .stat-label {
         color: var(--text-secondary);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 500;
         margin-top: 0.5rem;
     }
@@ -66,16 +66,21 @@
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 16px;
-        padding: 1.5rem;
+        padding: 1.25rem;
+        height: 100%;
     }
     .chart-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--text-primary);
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+    .chart-container {
+        position: relative;
+        height: 280px;
     }
 </style>
 @endpush
@@ -92,7 +97,7 @@
 </div>
 
 {{-- Stat Cards --}}
-<div class="row g-4 mb-4">
+<div class="row g-3 mb-4">
     @foreach([
         ['Total Users', $totalUsers, 'bi-people-fill', 'primary', 'rgba(102, 126, 234, 0.1)'],
         ['Total Students', $totalStudents, 'bi-mortarboard-fill', 'success', 'rgba(17, 153, 142, 0.1)'],
@@ -101,7 +106,7 @@
     ] as [$label, $val, $icon, $color, $bg])
     <div class="col-sm-6 col-xl-3">
         <div class="card stat-card {{ $color }} h-100">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
+            <div class="card-body d-flex align-items-center gap-3 p-3">
                 <div class="stat-icon" style="background: {{ $bg }};">
                     <i class="bi {{ $icon }}" style="background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                 </div>
@@ -116,14 +121,16 @@
 </div>
 
 {{-- Charts --}}
-<div class="row g-4">
+<div class="row g-3">
     <div class="col-lg-7">
         <div class="chart-card">
             <h6 class="chart-title">
                 <i class="bi bi-bar-chart-fill" style="color: var(--accent-primary);"></i>
                 Students by Course
             </h6>
-            <canvas id="courseChart" height="220"></canvas>
+            <div class="chart-container">
+                <canvas id="courseChart"></canvas>
+            </div>
         </div>
     </div>
     <div class="col-lg-5">
@@ -132,7 +139,9 @@
                 <i class="bi bi-pie-chart-fill" style="color: var(--accent-primary);"></i>
                 Students by Year Level
             </h6>
-            <canvas id="yearChart" height="220"></canvas>
+            <div class="chart-container">
+                <canvas id="yearChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -215,9 +224,10 @@ new Chart(document.getElementById('yearChart'), {
             legend: {
                 position: 'bottom',
                 labels: {
-                    padding: 15,
+                    padding: 10,
                     usePointStyle: true,
-                    pointStyle: 'circle'
+                    pointStyle: 'circle',
+                    font: { size: 11 }
                 }
             },
             tooltip: {
