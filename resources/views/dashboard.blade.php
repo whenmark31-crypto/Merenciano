@@ -96,7 +96,6 @@
     </a>
 </div>
 
-{{-- Stat Cards --}}
 <div class="row g-3 mb-4">
     @foreach([
         ['Total Users', $totalUsers, 'bi-people-fill', 'primary', 'rgba(102, 126, 234, 0.1)'],
@@ -120,7 +119,6 @@
     @endforeach
 </div>
 
-{{-- Charts --}}
 <div class="row g-3">
     <div class="col-lg-7">
         <div class="chart-card">
@@ -243,7 +241,6 @@ new Chart(document.getElementById('yearChart'), {
     }
 });
 
-// Update charts on theme change
 const observer = new MutationObserver(() => {
     location.reload();
 });
