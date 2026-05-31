@@ -32,6 +32,7 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `profile_picture` varchar(255) DEFAULT NULL,
+  `profile_picture_base64` longtext DEFAULT NULL,
   `address` varchar(500) DEFAULT NULL,
   `gender` enum('Male','Female','Other') DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,

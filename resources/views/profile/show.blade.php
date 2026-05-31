@@ -16,20 +16,12 @@
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm" style="border-radius:12px;">
             <div class="card-body text-center p-4">
-                @if(Auth::user()->profile_picture)
-                    @if(str_contains(Auth::user()->profile_picture, 'cloudinary') || str_contains(Auth::user()->profile_picture, 'http'))
-                        <img src="{{ Auth::user()->profile_picture }}" class="rounded-circle mb-3" width="150" height="150" style="object-fit:cover;">
-                    @elseif(file_exists(public_path('storage/' . Auth::user()->profile_picture)))
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="rounded-circle mb-3" width="150" height="150" style="object-fit:cover;">
-                    @else
-                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:150px;height:150px;">
-                            <i class="bi bi-person-fill text-primary" style="font-size:4rem;"></i>
-                        </div>
-                    @endif
+                @if(Auth::user()->profile_picture_base64)
+                    <img src="{{ Auth::user()->profile_picture_base64 }}" class="rounded-circle mb-3" width="150" height="150" style="object-fit:cover;">
                 @else
-                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:150px;height:150px;">
-                    <i class="bi bi-person-fill text-primary" style="font-size:4rem;"></i>
-                </div>
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:150px;height:150px;">
+                        <i class="bi bi-person-fill text-primary" style="font-size:4rem;"></i>
+                    </div>
                 @endif
                 <h5 class="fw-bold mb-1">{{ Auth::user()->name }}</h5>
                 <p class="text-muted small mb-0">{{ Auth::user()->email }}</p>

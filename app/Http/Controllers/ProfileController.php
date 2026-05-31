@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProfileController extends Controller
 {
@@ -37,30 +35,12 @@ class ProfileController extends Controller
         $data = $request->only(['name', 'email', 'phone', 'address', 'gender']);
 
         if ($request->hasFile('profile_picture')) {
-            if (config('filesystems.default') === 'cloudinary') {
-                if ($user->profile_picture && str_contains($user->profile_picture, 'cloudinary')) {
-                    $publicId = basename($user->profile_picture, '.' . pathinfo($user->profile_picture, PATHINFO_EXTENSION));
-                    try {
-                        Cloudinary::destroy($publicId);
-                    } catch (\Exception $e) {
-                    }
-                }
-                
-                $uploadedFile = Cloudinary::upload($request->file('profile_picture')->getRealPath(), [
-                    'folder' => 'profiles',
-                    'transformation' => [
-                        'width' => 400,
-                        'height' => 400,
-                        'crop' => 'fill'
-                    ]
-                ]);
-                $data['profile_picture'] = $uploadedFile->getSecurePath();
-            } else {
-                if ($user->profile_picture && !str_contains($user->profile_picture, 'cloudinary')) {
-                    Storage::disk('public')->delete($user->profile_picture);
-                }
-                $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
-            }
+            $image = $request->file('profile_picture');
+            $imageData = file_get_contents($image->getRealPath());
+            $base64 = base64_encode($imageData);
+            $mimeType = $image->getMimeType();
+            $data['profile_picture_base64'] = 'data:' . $mimeType . ';base64,' . $base64;
+            $data['profile_picture'] = 'base64';
         }
 
         if ($request->filled('password')) {
