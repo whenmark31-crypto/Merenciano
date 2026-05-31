@@ -412,8 +412,16 @@
             </button>
             
             <div class="user-menu dropdown d-none d-lg-flex">
-                @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
-                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="user-avatar" alt="Profile">
+                @if(Auth::user()->profile_picture)
+                    @if(str_contains(Auth::user()->profile_picture, 'cloudinary') || str_contains(Auth::user()->profile_picture, 'http'))
+                        <img src="{{ Auth::user()->profile_picture }}" class="user-avatar" alt="Profile">
+                    @elseif(file_exists(public_path('storage/' . Auth::user()->profile_picture)))
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="user-avatar" alt="Profile">
+                    @else
+                        <div class="user-avatar-placeholder">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                    @endif
                 @else
                 <div class="user-avatar-placeholder">
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
